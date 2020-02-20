@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 import java.util.HashMap;
 
 public class Main {
@@ -33,40 +31,53 @@ public class Main {
         //HashMap to reference data objects [replace object ref with real data object class name]
         HashMap<Integer, Integer> booksA = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> librariesA = new HashMap<Integer, Library>();
+        ArrayList<Library> librarySortedA = new ArrayList<>();
         HashSet<Integer> bookSentA = new HashSet<Integer>();
         HashMap<Integer, Integer> booksB = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> librariesB = new HashMap<Integer, Library>();
+        ArrayList<Library> librarySortedB = new ArrayList<>();
         HashSet<Integer> bookSentB = new HashSet<Integer>();
         HashMap<Integer, Integer> booksC = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> librariesC = new HashMap<Integer, Library>();
+        ArrayList<Library> librarySortedC = new ArrayList<>();
         HashSet<Integer> bookSentC = new HashSet<Integer>();
         HashMap<Integer, Integer> booksD = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> librariesD = new HashMap<Integer, Library>();
+        ArrayList<Library> librarySortedD = new ArrayList<>();
         HashSet<Integer> bookSentD = new HashSet<Integer>();
         HashMap<Integer, Integer> booksE = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> librariesE = new HashMap<Integer, Library>();
+        ArrayList<Library> librarySortedE = new ArrayList<>();
         HashSet<Integer> bookSentE = new HashSet<Integer>();
         HashMap<Integer, Integer> booksF = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> librariesF = new HashMap<Integer, Library>();
+        ArrayList<Library> librarySortedF = new ArrayList<>();
         HashSet<Integer> bookSentF = new HashSet<Integer>();
 
-        readFile("a_example.txt",numLibrariesA, booksA, librariesA);
-        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB);
-        readFile("c_incunabula.txt",numLibrariesC, booksC, librariesC);
-        readFile("d_tough_choices.txt",numLibrariesD, booksD, librariesD);
-        readFile("e_so_many_books.txt",numLibrariesE, booksE, librariesE);
-        readFile("f_libraries_of_the_world.txt",numLibrariesF, booksF, librariesF);
+        readFile("a_example.txt",numLibrariesA, booksA, librariesA, librarySortedA);
+        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB, librarySortedB);
+        readFile("c_incunabula.txt",numLibrariesC, booksC, librariesC, librarySortedC);
+        readFile("d_tough_choices.txt",numLibrariesD, booksD, librariesD, librarySortedD);
+        readFile("e_so_many_books.txt",numLibrariesE, booksE, librariesE, librarySortedE);
+        readFile("f_libraries_of_the_world.txt",numLibrariesF, booksF, librariesF, librarySortedF);
 
-        writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA);
-        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB);
-        writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC);
-        writeFile("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD);
-        writeFile("e_so_many_books.txt", numLibrariesE, librariesE, bookSentE);
-        writeFile("f_libraries_of_the_world.txt", numLibrariesF, librariesF, bookSentF);
+        Collections.sort(librarySortedA, new ValueComparison());
+        Collections.sort(librarySortedB, new ValueComparison());
+        Collections.sort(librarySortedC, new ValueComparison());
+        Collections.sort(librarySortedD, new ValueComparison());
+        Collections.sort(librarySortedE, new ValueComparison());
+        Collections.sort(librarySortedF, new ValueComparison());
+
+        writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA, librarySortedA);
+        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB, librarySortedB);
+        writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC, librarySortedC);
+        writeFile("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
+        writeFile("e_so_many_books.txt", numLibrariesE, librariesE, bookSentE, librarySortedE);
+        writeFile("f_libraries_of_the_world.txt", numLibrariesF, librariesF, bookSentF, librarySortedF);
 
     }
 
-    public static void readFile(String fileAddress, int numberLibraries, HashMap<Integer, Integer> books, HashMap<Integer, Library> libraries) {
+    public static void readFile(String fileAddress, int numberLibraries, HashMap<Integer, Integer> books, HashMap<Integer, Library> libraries, ArrayList<Library> librarySorted) {
         int numBooks = 0;
         int numLibraries = 0;
         int numDays = 0;
@@ -113,6 +124,7 @@ public class Main {
                     }
 
                     libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
+                    librarySorted.add(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
                     libraryNum++;
 
                 }
@@ -139,7 +151,7 @@ public class Main {
 
     }
 
-    public static void writeFile(String fileAddress, int numLibraries, HashMap<Integer, Library> libraries, HashSet<Integer> bookSent) {
+    public static void writeFile(String fileAddress, int numLibraries, HashMap<Integer, Library> libraries, HashSet<Integer> bookSent, ArrayList<Library> librariesSorted) {
         try {
             String fileOutput = "solution_" + fileAddress.substring(0,1) + ".txt";
             File output = new File(fileOutput);
@@ -150,7 +162,7 @@ public class Main {
             for (int i = 0; i < numLibraries; i++) {
                 int numBooksSent = 0;
                 String outStr = "";
-                for (int bookID : libraries.get(i).bookIDs) {
+                for (int bookID : librariesSorted.get(i).bookIDs) {
                     if (!bookSent.contains(bookID)) {
                         outStr += bookID + " ";
                         bookSent.add(bookID);
@@ -158,7 +170,7 @@ public class Main {
                     }
                 }
                 if(!(numBooksSent == 0)) {
-                    outputString+=i + " " + numBooksSent+"\n"+outStr+"\n";
+                    outputString+=librariesSorted.get(i).libraryID + " " + numBooksSent+"\n"+outStr+"\n";
                     usedLibraries++;
                 }
             }
