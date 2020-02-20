@@ -64,7 +64,7 @@ public class Main {
                         bookIDs[i] = Integer.parseInt(lineTwoArray[i]);
                     }
 
-                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs));
+                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
                     libraryNum++;
 
                 }
