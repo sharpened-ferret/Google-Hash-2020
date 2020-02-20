@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -18,6 +20,7 @@ public class Main {
         //HashMap to reference data objects [replace object ref with real data object class name]
         HashMap<Integer, Integer> books = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> libraries = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSent = new HashSet<Integer>();
 
         //Increment to count line no.
         int increment=0;
@@ -71,6 +74,31 @@ public class Main {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+
+        try {
+            File output = new File("solution.txt");
+            PrintWriter OutWriter = new PrintWriter(output);
+
+            OutWriter.println(numLibraries);
+            for (int i = 0; i < numLibraries; i++) {
+                int numBooksSent = 0;
+                String outStr = "";
+                for (int bookID : libraries.get(i).bookIDs) {
+                    if (!bookSent.contains(bookID)) {
+                        outStr += bookID + " ";
+                        bookSent.add(bookID);
+                        numBooksSent++;
+                    }
+                }
+                OutWriter.println(i + " " + numBooksSent);
+                OutWriter.println(outStr);
+            }
+            OutWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
     }
 }
 
