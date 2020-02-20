@@ -1,27 +1,76 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
 import java.util.HashMap;
 
 public class Main {
 
-    public static void main(String[] args) {
-        //File Address loaded from arguments
-        String fileAddress = args[0];
+    //Local vars for data store [as required]
+    static int numBooksA=0;
+    static int numLibrariesA=0;
+    static int numDaysA=0;
+    static int numBooksB=0;
+    static int numLibrariesB=0;
+    static int numDaysB=0;
+    static int numBooksC=0;
+    static int numLibrariesC=0;
+    static int numDaysC=0;
+    static int numBooksD=0;
+    static int numLibrariesD=0;
+    static int numDaysD=0;
+    static int numBooksE=0;
+    static int numLibrariesE=0;
+    static int numDaysE=0;
+    static int numBooksF=0;
+    static int numLibrariesF=0;
+    static int numDaysF=0;
 
-        //Local vars for data store [as required]
-        int numBooks=0;
-        int numLibraries=0;
-        int numDays=0;
+    public static void main(String[] args) {
 
         //HashMap to reference data objects [replace object ref with real data object class name]
-        HashMap<Integer, Integer> books = new HashMap<Integer, Integer>();
-        HashMap<Integer, Library> libraries = new HashMap<Integer, Library>();
-        HashSet<Integer> bookSent = new HashSet<Integer>();
-        ArrayList<Library> librariesSorted = new ArrayList<Library>();
+        HashMap<Integer, Integer> booksA = new HashMap<Integer, Integer>();
+        HashMap<Integer, Library> librariesA = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSentA = new HashSet<Integer>();
+        HashMap<Integer, Integer> booksB = new HashMap<Integer, Integer>();
+        HashMap<Integer, Library> librariesB = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSentB = new HashSet<Integer>();
+        HashMap<Integer, Integer> booksC = new HashMap<Integer, Integer>();
+        HashMap<Integer, Library> librariesC = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSentC = new HashSet<Integer>();
+        HashMap<Integer, Integer> booksD = new HashMap<Integer, Integer>();
+        HashMap<Integer, Library> librariesD = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSentD = new HashSet<Integer>();
+        HashMap<Integer, Integer> booksE = new HashMap<Integer, Integer>();
+        HashMap<Integer, Library> librariesE = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSentE = new HashSet<Integer>();
+        HashMap<Integer, Integer> booksF = new HashMap<Integer, Integer>();
+        HashMap<Integer, Library> librariesF = new HashMap<Integer, Library>();
+        HashSet<Integer> bookSentF = new HashSet<Integer>();
 
-        //Increment to count line no.
+        readFile("a_example.txt",numLibrariesA, booksA, librariesA);
+        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB);
+        readFile("c_incunabula.txt",numLibrariesC, booksC, librariesC);
+        readFile("d_tough_choices.txt",numLibrariesD, booksD, librariesD);
+        readFile("e_so_many_books.txt",numLibrariesE, booksE, librariesE);
+        readFile("f_libraries_of_the_world.txt",numLibrariesF, booksF, librariesF);
+
+        writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA);
+        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB);
+        writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC);
+        writeFile("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD);
+        writeFile("e_so_many_books.txt", numLibrariesE, librariesE, bookSentE);
+        writeFile("f_libraries_of_the_world.txt", numLibrariesF, librariesF, bookSentF);
+
+    }
+
+    public static void readFile(String fileAddress, int numberLibraries, HashMap<Integer, Integer> books, HashMap<Integer, Library> libraries) {
+        int numBooks = 0;
+        int numLibraries = 0;
+        int numDays = 0;
+
         int increment=0;
         int libraryNum = 0;
 
@@ -63,9 +112,7 @@ public class Main {
                         bookIDs[i] = Integer.parseInt(lineTwoArray[i]);
                     }
 
-                    Library temp_library = new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum);
-                    libraries.put(libraryNum, temp_library);
-                    librariesSorted.add(temp_library);
+                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
                     libraryNum++;
 
                 }
@@ -76,19 +123,34 @@ public class Main {
             e.printStackTrace();
         }
 
-        Collections.sort(librariesSorted, new scansPerDayComparison());
+        if (fileAddress.equals("a_example.txt")) {
+            numLibrariesA = numLibraries;
+        } else if (fileAddress.equals("b_read_on.txt")) {
+            numLibrariesB = numLibraries;
+        } else if (fileAddress.equals("c_incunabula.txt")) {
+            numLibrariesC = numLibraries;
+        } else if (fileAddress.equals("d_tough_choices.txt")) {
+            numLibrariesD = numLibraries;
+        } else if (fileAddress.equals("e_so_many_books.txt")) {
+            numLibrariesE = numLibraries;
+        } else if (fileAddress.equals("f_libraries_of_the_world.txt")) {
+            numLibrariesF = numLibraries;
+        }
 
+    }
+
+    public static void writeFile(String fileAddress, int numLibraries, HashMap<Integer, Library> libraries, HashSet<Integer> bookSent) {
         try {
-            File output = new File("solution.txt");
+            String fileOutput = "solution_" + fileAddress.substring(0,1) + ".txt";
+            File output = new File(fileOutput);
             PrintWriter OutWriter = new PrintWriter(output);
             int usedLibraries = 0;
             String outputString = "";
-            
+
             for (int i = 0; i < numLibraries; i++) {
-                int currentLibraryID = librariesSorted.get(i).libraryID;
                 int numBooksSent = 0;
                 String outStr = "";
-                for (int bookID : librariesSorted.get(i).bookIDs) {
+                for (int bookID : libraries.get(i).bookIDs) {
                     if (!bookSent.contains(bookID)) {
                         outStr += bookID + " ";
                         bookSent.add(bookID);
@@ -96,7 +158,7 @@ public class Main {
                     }
                 }
                 if(!(numBooksSent == 0)) {
-                    outputString+=currentLibraryID + " " + numBooksSent+"\n"+outStr+"\n";
+                    outputString+=i + " " + numBooksSent+"\n"+outStr+"\n";
                     usedLibraries++;
                 }
             }
@@ -106,7 +168,6 @@ public class Main {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-
     }
 }
 
