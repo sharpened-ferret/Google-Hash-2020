@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 import java.util.HashMap;
 
 public class Main {
@@ -21,6 +19,7 @@ public class Main {
         HashMap<Integer, Integer> books = new HashMap<Integer, Integer>();
         HashMap<Integer, Library> libraries = new HashMap<Integer, Library>();
         HashSet<Integer> bookSent = new HashSet<Integer>();
+        ArrayList<Library> librariesSorted = new ArrayList<Library>();
 
         //Increment to count line no.
         int increment=0;
@@ -64,7 +63,9 @@ public class Main {
                         bookIDs[i] = Integer.parseInt(lineTwoArray[i]);
                     }
 
-                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
+                    Library temp_library = new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum);
+                    libraries.put(libraryNum, temp_library);
+                    librariesSorted.add(temp_library);
                     libraryNum++;
 
                 }
@@ -75,6 +76,8 @@ public class Main {
             e.printStackTrace();
         }
 
+        Collections.sort(librariesSorted, new scansPerDayComparison());
+
         try {
             File output = new File("solution.txt");
             PrintWriter OutWriter = new PrintWriter(output);
@@ -82,9 +85,10 @@ public class Main {
             String outputString = "";
             
             for (int i = 0; i < numLibraries; i++) {
+                int currentLibraryID = librariesSorted.get(i).libraryID;
                 int numBooksSent = 0;
                 String outStr = "";
-                for (int bookID : libraries.get(i).bookIDs) {
+                for (int bookID : librariesSorted.get(i).bookIDs) {
                     if (!bookSent.contains(bookID)) {
                         outStr += bookID + " ";
                         bookSent.add(bookID);
@@ -92,7 +96,7 @@ public class Main {
                     }
                 }
                 if(!(numBooksSent == 0)) {
-                    outputString+=i + " " + numBooksSent+"\n"+outStr+"\n";
+                    outputString+=currentLibraryID + " " + numBooksSent+"\n"+outStr+"\n";
                     usedLibraries++;
                 }
             }
