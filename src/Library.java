@@ -7,6 +7,7 @@ public class Library {
     public int signupTime;
     public int scansPerDay;
     public int[] bookIDs;
+    public double value;
     public ArrayList<Integer> sentOrder = new ArrayList<>();
 
     public Library(int numberOfBooks, int signupTime, int scansPerDay, int[] booksIDs, int libraryID) {
@@ -15,6 +16,11 @@ public class Library {
         this.scansPerDay = scansPerDay;
         this.bookIDs = booksIDs;
         this.libraryID = libraryID;
+        this.value = calcValue();
+    }
+
+    public double calcValue() {
+        return scansPerDay / signupTime;
     }
 
 }
