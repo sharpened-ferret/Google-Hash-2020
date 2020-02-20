@@ -78,8 +78,9 @@ public class Main {
         try {
             File output = new File("solution.txt");
             PrintWriter OutWriter = new PrintWriter(output);
-
-            OutWriter.println(numLibraries);
+            int usedLibraries = 0;
+            String outputString = "";
+            
             for (int i = 0; i < numLibraries; i++) {
                 int numBooksSent = 0;
                 String outStr = "";
@@ -90,9 +91,12 @@ public class Main {
                         numBooksSent++;
                     }
                 }
-                OutWriter.println(i + " " + numBooksSent);
-                OutWriter.println(outStr);
+                if(!(numBooksSent == 0)) {
+                    outputString+=i + " " + numBooksSent+"\n"+outStr+"\n";
+                    usedLibraries++;
+                }
             }
+            OutWriter.println(usedLibraries+"\n"+outputString);
             OutWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
