@@ -130,13 +130,19 @@ public class Main {
                     String[] lineTwoArray = dataTwo.split(" ");
                     ArrayList<Book> bookList = new ArrayList<>();
                     int[] bookIDs= new int[numBooksInLibrary];
+                    int totalValue = 0;
                     for (int i=0; i<numBooksInLibrary; i++) {
                         bookIDs[i] = Integer.parseInt(lineTwoArray[i]);
-                        bookList.add(i, books.get(Integer.parseInt(lineTwoArray[i])));
+                        Book tempBook = books.get(Integer.parseInt(lineTwoArray[i]));
+                        bookList.add(i, tempBook);
+                        totalValue+=tempBook.bookValue;
                     }
+                    int averageValue = totalValue / bookIDs.length;
+//                    System.out.println("Total value: "+totalValue+" Num Books: "+bookIDs.length);
+//                    System.out.println("Average value:"+averageValue);
                     Collections.sort(bookList, new BookValueComparison());
-                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookList, libraryNum));
-                    librarySorted.add(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookList, libraryNum));
+                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookList, libraryNum, averageValue));
+                    librarySorted.add(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookList, libraryNum, averageValue));
                     libraryNum++;
 
                 }
@@ -174,6 +180,7 @@ public class Main {
             for (int i = 0; i < numLibraries; i++) {
                 int numBooksSent = 0;
                 String outStr = "";
+                System.out.println(librariesSorted.get(i).value);
                 for (Book bookID : librariesSorted.get(i).bookIDs) {
                     if (!bookSent.contains(bookID.bookID)) {
                         outStr += bookID.bookID + " ";

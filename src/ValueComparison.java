@@ -8,7 +8,7 @@ public class ValueComparison implements Comparator {
         if (l1.value == l2.value) {
             return 0;
         }
-        else if (l1.value > l2.value) {
+        else if (l1.value < l2.value) {
             return 1;
         }
         else {
