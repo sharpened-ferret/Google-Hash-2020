@@ -22,7 +22,7 @@ public class Library {
     }
 
     public double calcValue() {
-        return ((scansPerDay*averageBookValue) / (double)signupTime);
+        return ((scansPerDay*averageBookValue)*numOfBooks / (double)signupTime);
     }
 
 }
