@@ -6,11 +6,11 @@ public class Library {
     public int numOfBooks;
     public int signupTime;
     public int scansPerDay;
-    public int[] bookIDs;
+    public ArrayList<Book> bookIDs;
     public double value;
     public ArrayList<Integer> sentOrder = new ArrayList<>();
 
-    public Library(int numberOfBooks, int signupTime, int scansPerDay, int[] booksIDs, int libraryID) {
+    public Library(int numberOfBooks, int signupTime, int scansPerDay, ArrayList<Book> booksIDs, int libraryID) {
         this.numOfBooks = numberOfBooks;
         this.signupTime = signupTime;
         this.scansPerDay = scansPerDay;
@@ -20,7 +20,7 @@ public class Library {
     }
 
     public double calcValue() {
-        return (scansPerDay / signupTime) * numOfBooks;
+        return (scansPerDay / signupTime*2);
     }
 
 }

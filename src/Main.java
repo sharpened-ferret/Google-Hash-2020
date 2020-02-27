@@ -29,27 +29,27 @@ public class Main {
     public static void main(String[] args) {
 
         //HashMap to reference data objects [replace object ref with real data object class name]
-        HashMap<Integer, Integer> booksA = new HashMap<Integer, Integer>();
+        HashMap<Integer, Book> booksA = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesA = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedA = new ArrayList<>();
         HashSet<Integer> bookSentA = new HashSet<Integer>();
-        HashMap<Integer, Integer> booksB = new HashMap<Integer, Integer>();
+        HashMap<Integer, Book> booksB = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesB = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedB = new ArrayList<>();
         HashSet<Integer> bookSentB = new HashSet<Integer>();
-        HashMap<Integer, Integer> booksC = new HashMap<Integer, Integer>();
+        HashMap<Integer, Book> booksC = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesC = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedC = new ArrayList<>();
         HashSet<Integer> bookSentC = new HashSet<Integer>();
-        HashMap<Integer, Integer> booksD = new HashMap<Integer, Integer>();
+        HashMap<Integer, Book> booksD = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesD = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedD = new ArrayList<>();
         HashSet<Integer> bookSentD = new HashSet<Integer>();
-        HashMap<Integer, Integer> booksE = new HashMap<Integer, Integer>();
+        HashMap<Integer, Book> booksE = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesE = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedE = new ArrayList<>();
         HashSet<Integer> bookSentE = new HashSet<Integer>();
-        HashMap<Integer, Integer> booksF = new HashMap<Integer, Integer>();
+        HashMap<Integer, Book> booksF = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesF = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedF = new ArrayList<>();
         HashSet<Integer> bookSentF = new HashSet<Integer>();
@@ -68,6 +68,14 @@ public class Main {
         Collections.sort(librarySortedE, new ValueComparison());
         Collections.sort(librarySortedF, new ValueComparison());
 
+//        Collections.sort(librarySortedA, new scansPerDayComparison());
+//        Collections.sort(librarySortedB, new scansPerDayComparison());
+//        Collections.sort(librarySortedC, new scansPerDayComparison());
+//        Collections.sort(librarySortedD, new scansPerDayComparison());
+//        Collections.sort(librarySortedE, new scansPerDayComparison());
+//        Collections.sort(librarySortedF, new scansPerDayComparison());
+
+
         writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA, librarySortedA);
         writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB, librarySortedB);
         writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC, librarySortedC);
@@ -77,7 +85,7 @@ public class Main {
 
     }
 
-    public static void readFile(String fileAddress, int numberLibraries, HashMap<Integer, Integer> books, HashMap<Integer, Library> libraries, ArrayList<Library> librarySorted) {
+    public static void readFile(String fileAddress, int numberLibraries, HashMap<Integer, Book> books, HashMap<Integer, Library> libraries, ArrayList<Library> librarySorted) {
         int numBooks = 0;
         int numLibraries = 0;
         int numDays = 0;
@@ -105,7 +113,9 @@ public class Main {
                     String[] lineArray =data.split(" ");
                     int bookIncrement = 0;
                     while (bookIncrement<lineArray.length) {
-                        books.put(bookIncrement, Integer.parseInt(lineArray[bookIncrement]));
+                        //books.put(bookIncrement, Integer.parseInt(lineArray[bookIncrement]));
+                        Book tempBook= new Book(bookIncrement, Integer.parseInt((lineArray[bookIncrement])));
+                        books.put(bookIncrement, tempBook);
                         bookIncrement++;
                     }
                     increment++;
@@ -118,13 +128,15 @@ public class Main {
                     int scansPerDay = Integer.parseInt(lineOneArray[2]);
                     String dataTwo = InputReader.nextLine();
                     String[] lineTwoArray = dataTwo.split(" ");
+                    ArrayList<Book> bookList = new ArrayList<>();
                     int[] bookIDs= new int[numBooksInLibrary];
                     for (int i=0; i<numBooksInLibrary; i++) {
                         bookIDs[i] = Integer.parseInt(lineTwoArray[i]);
+                        bookList.add(i, books.get(Integer.parseInt(lineTwoArray[i])));
                     }
-
-                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
-                    librarySorted.add(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookIDs, libraryNum));
+                    Collections.sort(bookList, new BookValueComparison());
+                    libraries.put(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookList, libraryNum));
+                    librarySorted.add(libraryNum, new Library(numBooksInLibrary, signUpTime, scansPerDay, bookList, libraryNum));
                     libraryNum++;
 
                 }
@@ -162,10 +174,10 @@ public class Main {
             for (int i = 0; i < numLibraries; i++) {
                 int numBooksSent = 0;
                 String outStr = "";
-                for (int bookID : librariesSorted.get(i).bookIDs) {
-                    if (!bookSent.contains(bookID)) {
-                        outStr += bookID + " ";
-                        bookSent.add(bookID);
+                for (Book bookID : librariesSorted.get(i).bookIDs) {
+                    if (!bookSent.contains(bookID.bookID)) {
+                        outStr += bookID.bookID + " ";
+                        bookSent.add(bookID.bookID);
                         numBooksSent++;
                     }
                 }
