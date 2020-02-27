@@ -137,7 +137,7 @@ public class Main {
                         bookList.add(i, tempBook);
                         totalValue+=tempBook.bookValue;
                     }
-                    int averageValue = totalValue / bookIDs.length;
+                    double averageValue = totalValue / bookIDs.length;
 //                    System.out.println("Total value: "+totalValue+" Num Books: "+bookIDs.length);
 //                    System.out.println("Average value:"+averageValue);
                     Collections.sort(bookList, new BookValueComparison());

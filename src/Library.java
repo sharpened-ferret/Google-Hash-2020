@@ -9,9 +9,9 @@ public class Library {
     public ArrayList<Book> bookIDs;
     public double value;
     public ArrayList<Integer> sentOrder = new ArrayList<>();
-    public int averageBookValue;
+    public double averageBookValue;
 
-    public Library(int numberOfBooks, int signupTime, int scansPerDay, ArrayList<Book> booksIDs, int libraryID, int averageBookValue) {
+    public Library(int numberOfBooks, int signupTime, int scansPerDay, ArrayList<Book> booksIDs, int libraryID, double averageBookValue) {
         this.numOfBooks = numberOfBooks;
         this.signupTime = signupTime;
         this.scansPerDay = scansPerDay;
@@ -22,8 +22,7 @@ public class Library {
     }
 
     public double calcValue() {
-        return ((scansPerDay*averageBookValue) / signupTime);
-        //return averageBookValue;
+        return ((scansPerDay*averageBookValue) / (double)signupTime);
     }
 
 }
