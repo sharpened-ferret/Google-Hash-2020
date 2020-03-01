@@ -33,10 +33,14 @@ public class Main {
         HashMap<Integer, Library> librariesA = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedA = new ArrayList<>();
         HashSet<Integer> bookSentA = new HashSet<Integer>();
+        HashSet<Integer> librariesUsedA = new HashSet<>();
+
         HashMap<Integer, Book> booksB = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesB = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedB = new ArrayList<>();
         HashSet<Integer> bookSentB = new HashSet<Integer>();
+        HashSet<Integer> librariesUsedB = new HashSet<>();
+
         HashMap<Integer, Book> booksC = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesC = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedC = new ArrayList<>();
@@ -45,26 +49,29 @@ public class Main {
         HashMap<Integer, Library> librariesD = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedD = new ArrayList<>();
         HashSet<Integer> bookSentD = new HashSet<Integer>();
+        HashSet<Integer> librariesUsedD = new HashSet<>();
         HashMap<Integer, Book> booksE = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesE = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedE = new ArrayList<>();
         HashSet<Integer> bookSentE = new HashSet<Integer>();
+        HashSet<Integer> librariesUsedE = new HashSet<>();
+
         HashMap<Integer, Book> booksF = new HashMap<Integer, Book>();
         HashMap<Integer, Library> librariesF = new HashMap<Integer, Library>();
         ArrayList<Library> librarySortedF = new ArrayList<>();
         HashSet<Integer> bookSentF = new HashSet<Integer>();
 
-        readFile("a_example.txt",numLibrariesA, booksA, librariesA, librarySortedA);
-        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB, librarySortedB);
-        readFile("c_incunabula.txt",numLibrariesC, booksC, librariesC, librarySortedC);
+//        readFile("a_example.txt",numLibrariesA, booksA, librariesA, librarySortedA);
+//        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB, librarySortedB);
+//        readFile("c_incunabula.txt",numLibrariesC, booksC, librariesC, librarySortedC);
         readFile("d_tough_choices.txt",numLibrariesD, booksD, librariesD, librarySortedD);
-        readFile("e_so_many_books.txt",numLibrariesE, booksE, librariesE, librarySortedE);
-        readFile("f_libraries_of_the_world.txt",numLibrariesF, booksF, librariesF, librarySortedF);
+//        readFile("e_so_many_books.txt",numLibrariesE, booksE, librariesE, librarySortedE);
+//        readFile("f_libraries_of_the_world.txt",numLibrariesF, booksF, librariesF, librarySortedF);
 
         Collections.sort(librarySortedA, new ValueComparison());
         Collections.sort(librarySortedB, new ValueComparison());
         Collections.sort(librarySortedC, new ValueComparison());
-        Collections.sort(librarySortedD, new ValueComparison());
+        Collections.sort(librarySortedD, new BookNumberComparison());
         Collections.sort(librarySortedE, new ValueComparison());
         Collections.sort(librarySortedF, new ValueComparison());
 
@@ -76,12 +83,13 @@ public class Main {
 //        Collections.sort(librarySortedF, new scansPerDayComparison());
 
 
-        writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA, librarySortedA);
-        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB, librarySortedB);
-        writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC, librarySortedC);
-        writeFile("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
-        writeFile("e_so_many_books.txt", numLibrariesE, librariesE, bookSentE, librarySortedE);
-        writeFile("f_libraries_of_the_world.txt", numLibrariesF, librariesF, bookSentF, librarySortedF);
+        //writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA, librarySortedA);
+//        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB, librarySortedB);
+//        writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC, librarySortedC);
+//        writeFile("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
+        writeFileD("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
+//        writeFile("e_so_many_books.txt", numLibrariesE, librariesE, bookSentE, librarySortedE);
+//        writeFile("f_libraries_of_the_world.txt", numLibrariesF, librariesF, bookSentF, librarySortedF);
 
     }
 
@@ -180,7 +188,7 @@ public class Main {
             for (int i = 0; i < numLibraries; i++) {
                 int numBooksSent = 0;
                 String outStr = "";
-                System.out.println(librariesSorted.get(i).value);
+                //System.out.println(librariesSorted.get(i).value);
                 for (Book bookID : librariesSorted.get(i).bookIDs) {
                     if (!bookSent.contains(bookID.bookID)) {
                         outStr += bookID.bookID + " ";
@@ -200,5 +208,56 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+
+    public static void writeFileD(String fileAddress, int numLibraries, HashMap<Integer, Library> libraries, HashSet<Integer> bookSent, ArrayList<Library> librariesSorted) {
+        try {
+            String fileOutput = "solution_" + fileAddress.substring(0,1) + ".txt";
+            File output = new File(fileOutput);
+            PrintWriter OutWriter = new PrintWriter(output);
+            int usedLibraries = 0;
+            String outputString = "";
+            boolean completed = false;
+
+
+
+            while (!completed) {
+                System.out.println("Current Library: "+ librariesSorted.get(0).libraryID+", Used Libraries: "+usedLibraries);
+                ArrayList<Book> booksSent = new ArrayList<>();
+                int numBooksSent = 0;
+                String outStr = "";
+                //System.out.println(librariesSorted.get(i).value);
+                for (Book bookID : librariesSorted.get(0).bookIDs) {
+                    if (!bookSent.contains(bookID.bookID)) {
+                        outStr += bookID.bookID + " ";
+                        bookSent.add(bookID.bookID);
+                        booksSent.add(bookID);
+                        numBooksSent++;
+                    }
+                }
+                if(!(numBooksSent == 0)) {
+                    outputString+=librariesSorted.get(0).libraryID + " " + numBooksSent+"\n"+outStr+"\n";
+                    usedLibraries++;
+                }
+                librariesSorted.remove(0);
+                for (Library library : librariesSorted) {
+                    library.bookUpdate(booksSent);
+                }
+                if (librariesSorted.size()==0) {
+                    completed=true;
+                }
+                else {
+                    Collections.sort(librariesSorted, new BookNumberComparison());
+                }
+            }
+
+            OutWriter.println(usedLibraries+"\n"+outputString);
+            OutWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
 }
 

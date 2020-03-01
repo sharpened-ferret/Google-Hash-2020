@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+
+import static java.lang.Math.pow;
 
 public class Library {
 
@@ -17,12 +20,44 @@ public class Library {
         this.scansPerDay = scansPerDay;
         this.bookIDs = booksIDs;
         this.libraryID = libraryID;
-        this.averageBookValue = averageBookValue;
+        this.averageBookValue = (averageBookValue*numberOfBooks)/(numberOfBooks+signupTime);
         this.value = calcValue();
     }
 
     public double calcValue() {
-        return ((scansPerDay*averageBookValue)*numOfBooks / (double)signupTime);
+        return (((pow(scansPerDay,0)*pow(averageBookValue,0))*pow(numOfBooks,1)) / (double)pow(signupTime,0));
+        //return averageBookValue*scansPerDay;
+    }
+
+    public int scoreTotal(int numDays) {
+        numDays -= signupTime;
+        int totalScore = 0;
+        try {
+            for (int i = 0; i < numDays; i++) {
+                totalScore+=bookIDs.get(i).bookValue;
+            }
+        } catch(IndexOutOfBoundsException e) {
+
+        }
+        return totalScore;
+    }
+
+    public void bookUpdate(ArrayList<Book> BooksSent) {
+        //HashSet<Integer> tempSet = new HashSet<>();
+        for (Book book : BooksSent) {
+            bookIDs.remove(book);
+            numOfBooks=bookIDs.size();
+            //tempSet.add(book.bookID);
+        }
+//        for (Book book : bookIDs) {
+//            if (tempSet.contains(book.bookID)) {
+//                System.out.println("Duplicate Detected!");
+//            }
+//        }
+//        if (numOfBooks!=bookIDs.size()) {
+//            System.out.println("Removed Duplicate(s)");
+//            numOfBooks=bookIDs.size();
+//        }
     }
 
 }
