@@ -17,7 +17,7 @@ public class SignUpTimeComparator implements Comparator {
         if (l1.signupTime == l2.signupTime) {
             return 0;
         }
-        else if (l1.signupTime < l2.signupTime) {
+        else if (l1.signupTime > l2.signupTime) {
             return 1;
         }
         else {

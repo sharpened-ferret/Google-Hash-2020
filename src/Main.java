@@ -62,14 +62,14 @@ public class Main {
         HashSet<Integer> bookSentF = new HashSet<Integer>();
 
 //        readFile("a_example.txt",numLibrariesA, booksA, librariesA, librarySortedA);
-//        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB, librarySortedB);
+        readFile("b_read_on.txt",numLibrariesB, booksB, librariesB, librarySortedB);
 //        readFile("c_incunabula.txt",numLibrariesC, booksC, librariesC, librarySortedC);
-        readFile("d_tough_choices.txt",numLibrariesD, booksD, librariesD, librarySortedD);
+//        readFile("d_tough_choices.txt",numLibrariesD, booksD, librariesD, librarySortedD);
 //        readFile("e_so_many_books.txt",numLibrariesE, booksE, librariesE, librarySortedE);
 //        readFile("f_libraries_of_the_world.txt",numLibrariesF, booksF, librariesF, librarySortedF);
 
         Collections.sort(librarySortedA, new ValueComparison());
-        Collections.sort(librarySortedB, new ValueComparison());
+        Collections.sort(librarySortedB, new SignUpTimeComparator());
         Collections.sort(librarySortedC, new ValueComparison());
         Collections.sort(librarySortedD, new BookNumberComparison());
         Collections.sort(librarySortedE, new ValueComparison());
@@ -84,10 +84,10 @@ public class Main {
 
 
         //writeFile("a_example.txt", numLibrariesA, librariesA, bookSentA, librarySortedA);
-//        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB, librarySortedB);
+        writeFile("b_read_on.txt", numLibrariesB, librariesB, bookSentB, librarySortedB);
 //        writeFile("c_incunabula.txt", numLibrariesC, librariesC, bookSentC, librarySortedC);
 //        writeFile("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
-        writeFileD("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
+//        writeFileD("d_tough_choices.txt", numLibrariesD, librariesD, bookSentD, librarySortedD);
 //        writeFile("e_so_many_books.txt", numLibrariesE, librariesE, bookSentE, librarySortedE);
 //        writeFile("f_libraries_of_the_world.txt", numLibrariesF, librariesF, bookSentF, librarySortedF);
 
